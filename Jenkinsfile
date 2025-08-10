@@ -2,16 +2,13 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/MHasan-sys/flask-app-jenkins.git'
-            }
-        }
         stage('Build & Run Docker') {
             steps {
                 script {
+                    // Stop any running containers (ignore errors)
+                    sh 'docker-compose down || true'
+
                     // Build and run using docker-compose
-                    sh 'docker-compose down'    // stop any running containers
                     sh 'docker-compose up -d --build'
                 }
             }
